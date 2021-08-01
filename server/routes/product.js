@@ -1,4 +1,5 @@
 
+const json = require('body-parser/lib/types/json');
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
@@ -48,6 +49,25 @@ router.post("/", (req, res) => {
       success: true
     })
   })
+})
+
+router.post("/products", (req, res) => {
+  // get all DB data and send to client
+  Product.find()
+    .populate("writer")
+    .exec((err, productInfo) => {
+      if(err) {
+        return res.status(400).json({
+          success: false, 
+          err 
+        })
+      } else {
+        return res.status(200).json({
+          success: true,
+          productInfo
+        })
+      }
+    })
 })
 
 module.exports = router;
